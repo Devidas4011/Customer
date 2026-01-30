@@ -1,0 +1,145 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.access.InvalidInvocationException;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.execption.InvalidId;
+import com.example.demo.execption.InvalidMob;
+import com.example.demo.execption.InvalidName;
+import com.example.demo.model.Customer;
+import com.example.demo.repository.CustomerRepository;
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+	@Autowired
+	private CustomerRepository cr;
+
+	@Override
+	public void add(Customer customer) {
+		// TODO Auto-generated method stub
+		
+		Integer id=customer.getId();
+		
+		
+		if(id > 0) {
+			if(cr.existsById(id)) {
+				throw new InvalidId("Duplicate Id");
+			}
+		
+		}
+		else
+			throw new InvalidId("Invalid Id");
+			
+	    
+		String name=customer.getName();
+		
+		List<Customer> list=cr.findByName(name);
+		
+		if(!list.isEmpty()) {
+			  throw new InvalidName("Customer name already exists");
+		}
+		
+		String mob = customer.getMob().trim();
+
+		if (mob.startsWith("+91"))
+			mob = mob.substring(3);
+
+		if (mob.length() == 10) {
+
+			if (mob.charAt(0) == '0' || mob.charAt(0) == '1' || mob.charAt(0) == '2' || mob.charAt(0) == '3'
+					|| mob.charAt(0) == '4' || mob.charAt(0) == '5')
+				throw new InvalidMob("Invalid Mobaile Number");
+
+			for (int i = 0; i < mob.length(); i++) {
+
+				if (!Character.isDigit(mob.charAt(i)))
+					throw new InvalidMob("Invalid Mobaile Number");
+
+			}
+		}
+
+		else
+			throw new InvalidMob("Invalid Mobaile Number");
+
+		cr.save(customer);// insert
+
+	}
+
+	@Override
+	public List<Customer> display() {
+		// TODO Auto-generated method stub
+		return cr.findAll();// select * from Customer
+	}
+
+	@Override
+	public Customer delete(Integer id) {
+		// TODO Auto-generated method stub
+		// search
+
+		if (cr.findById(id).isPresent()) {
+			Customer temp = cr.findById(id).get();
+			cr.deleteById(id);
+			return temp;
+
+		} else
+			return null;
+	}
+
+	@Override
+	public void update(Customer customer, Integer id) {
+		// TODO Auto-generated method stub
+
+		customer.setId(id);
+		cr.save(customer);
+	}
+
+	@Override
+	public Customer search(Integer id) {
+		// TODO Auto-generated method stub
+
+		if (cr.findById(id).isPresent()) {
+			Customer temp = cr.findById(id).get();
+			return temp;
+		}
+
+		else
+			return null;
+	}
+
+	@Override
+	public void addAll(List<Customer> list) {
+		// TODO Auto-generated method stub
+
+		cr.saveAll(list);
+
+	}
+
+	@Override
+	public Customer findByMob(String mob) {
+
+		return cr.findByMob(mob);
+	}
+
+	@Override
+	public List<Customer> findByName(String name) {
+		// TODO Auto-generated method stub
+		return cr.findByName(name);
+	}
+
+	@Override
+	public List<Customer> findByTotal(Float total) {
+		// TODO Auto-generated method stub
+		return cr.findByTotal(total);
+	}
+
+	@Override
+	public List<Customer> findByAddress(String address) {
+		// TODO Auto-generated method stub
+		return cr.findByAddress(address);
+	}
+
+}
