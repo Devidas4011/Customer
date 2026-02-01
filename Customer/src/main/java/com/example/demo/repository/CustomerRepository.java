@@ -11,7 +11,8 @@ import com.example.demo.model.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
 	 Customer findByMob(String mob);
-	 List findByName(String name);
+	 
+	 List<Customer> findByName(String name);
 	 
 	 List<Customer> findByTotal(Float total);
 	 
