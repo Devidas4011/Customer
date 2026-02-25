@@ -16,7 +16,6 @@ import com.example.demo.CustomerApplication;
 import com.example.demo.model.Customer;
 import com.example.demo.service.CustomerService;
 
-@CrossOrigin(origins = "*")
 @RestController
 public class CustomerController {
 

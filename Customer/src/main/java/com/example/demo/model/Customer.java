@@ -12,6 +12,11 @@ public class Customer {
 	private String mob;
 	private String address;
 	private float total;
+	
+	
+	
+	
+	
 	public Customer() {
 		super();
 		// TODO Auto-generated constructor stub
