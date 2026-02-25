@@ -24,16 +24,16 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Integer id=customer.getId();
 		
-		
-		if(id > 0) {
-			if(cr.existsById(id)) {
-				throw new InvalidId("Duplicate Id");
-			}
-		
-		}
-		else
-			throw new InvalidId("Invalid Id");
-			
+//		
+//		if(id > 0) {
+//			if(cr.existsById(id)) {
+//				throw new InvalidId("Duplicate Id");
+//			}
+//		
+//		}
+//		else
+//			throw new InvalidId("Invalid Id");
+//			
 	    
 		String name=customer.getName();
 		
